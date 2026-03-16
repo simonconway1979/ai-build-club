@@ -1,3 +1,5 @@
+ "use client";
+
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,10 +16,38 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function Home() {
-  const joinHref =
-    "mailto:simon.conway@condaal.com?subject=AI%20Build%20Club%20-%20Join%20the%20next%20cohort";
+  const handleJoinSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const name = String(formData.get("name") || "").trim();
+    const email = String(formData.get("email") || "").trim();
+    const linkedin = String(formData.get("linkedin") || "").trim();
+
+    const subject = encodeURIComponent(
+      "AI Build Club - Join the next cohort"
+    );
+    const body = encodeURIComponent(
+      [
+        "New AI Build Club interest:",
+        "",
+        `Name: ${name}`,
+        `Email: ${email}`,
+        `LinkedIn: ${linkedin}`,
+      ].join("\n")
+    );
+
+    window.location.href = `mailto:simon.conwayt@condaal.com?subject=${subject}&body=${body}`;
+  };
 
   return (
     <>
@@ -58,14 +88,90 @@ export default function Home() {
               FAQ
             </Link>
           </nav>
-          <div className="flex items-center gap-2">
-            <a
-              href={joinHref}
-              className="inline-flex h-10 items-center justify-center rounded-lg bg-[#FF6600] px-4 text-sm font-medium text-white transition hover:bg-[#E65C00] hover:scale-[1.02]"
-            >
-              Join the Next Cohort
-            </a>
-          </div>
+          <Dialog>
+            <div className="flex items-center gap-2">
+              <DialogTrigger>
+                <Button
+                  size="lg"
+                  className="h-10 rounded-lg bg-[#FF6600] px-4 text-sm font-medium text-white hover:bg-[#E65C00] hover:scale-[1.02]"
+                >
+                  Join the Next Cohort
+                </Button>
+              </DialogTrigger>
+            </div>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Join the next AI Build Club cohort</DialogTitle>
+                <DialogDescription>
+                  Share a few details and we&apos;ll follow up with next
+                  steps. This is for a small, motivated group of AI-native
+                  builders who want real portfolio evidence, not just buzzwords.
+                </DialogDescription>
+              </DialogHeader>
+              <form className="mt-4 space-y-4" onSubmit={handleJoinSubmit}>
+                <div className="space-y-1">
+                  <label
+                    htmlFor="nav-name"
+                    className="block text-sm font-medium text-foreground"
+                  >
+                    Name
+                  </label>
+                  <input
+                    id="nav-name"
+                    name="name"
+                    type="text"
+                    required
+                    className="block w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-visible:border-[#FF6600] focus-visible:ring-2 focus-visible:ring-[#FF6600] focus-visible:ring-offset-2"
+                    placeholder="Your full name"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label
+                    htmlFor="nav-email"
+                    className="block text-sm font-medium text-foreground"
+                  >
+                    Email
+                  </label>
+                  <input
+                    id="nav-email"
+                    name="email"
+                    type="email"
+                    required
+                    className="block w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-visible:border-[#FF6600] focus-visible:ring-2 focus-visible:ring-[#FF6600] focus-visible:ring-offset-2"
+                    placeholder="you@example.com"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label
+                    htmlFor="nav-linkedin"
+                    className="block text-sm font-medium text-foreground"
+                  >
+                    LinkedIn
+                  </label>
+                  <input
+                    id="nav-linkedin"
+                    name="linkedin"
+                    type="url"
+                    required
+                    className="block w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-visible:border-[#FF6600] focus-visible:ring-2 focus-visible:ring-[#FF6600] focus-visible:ring-offset-2"
+                    placeholder="https://www.linkedin.com/in/you"
+                  />
+                </div>
+
+                <div className="mt-6 flex justify-end">
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="h-10 rounded-lg bg-[#FF6600] px-5 text-sm font-medium text-white hover:bg-[#E65C00] hover:scale-[1.02]"
+                  >
+                    Join the Next Cohort
+                  </Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
       </header>
 
@@ -87,12 +193,91 @@ export default function Home() {
               </p>
 
               <div className="mt-8 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center">
-                <a
-                  href={joinHref}
-                  className="inline-flex h-14 w-full items-center justify-center rounded-lg bg-[#FF6600] px-8 text-lg font-medium text-white transition hover:bg-[#E65C00] hover:scale-[1.02] sm:w-auto"
-                >
-                  Join the Next Cohort
-                </a>
+                <Dialog>
+                  <DialogTrigger>
+                    <Button
+                      size="lg"
+                      className="h-14 w-full rounded-lg bg-[#FF6600] px-8 text-lg font-medium text-white transition hover:bg-[#E65C00] hover:scale-[1.02] sm:w-auto"
+                    >
+                      Join the Next Cohort
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>
+                        Join the next AI Build Club cohort
+                      </DialogTitle>
+                      <DialogDescription>
+                        Share a few details and we&apos;ll follow up with
+                        next steps. This is for a small, motivated group of
+                        AI-native builders who want real portfolio evidence,
+                        not just buzzwords.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <form className="mt-4 space-y-4" onSubmit={handleJoinSubmit}>
+                      <div className="space-y-1">
+                        <label
+                          htmlFor="hero-name"
+                          className="block text-sm font-medium text-foreground"
+                        >
+                          Name
+                        </label>
+                        <input
+                          id="hero-name"
+                          name="name"
+                          type="text"
+                          required
+                          className="block w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-visible:border-[#FF6600] focus-visible:ring-2 focus-visible:ring-[#FF6600] focus-visible:ring-offset-2"
+                          placeholder="Your full name"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label
+                          htmlFor="hero-email"
+                          className="block text-sm font-medium text-foreground"
+                        >
+                          Email
+                        </label>
+                        <input
+                          id="hero-email"
+                          name="email"
+                          type="email"
+                          required
+                          className="block w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-visible:border-[#FF6600] focus-visible:ring-2 focus-visible:ring-[#FF6600] focus-visible:ring-offset-2"
+                          placeholder="you@example.com"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label
+                          htmlFor="hero-linkedin"
+                          className="block text-sm font-medium text-foreground"
+                        >
+                          LinkedIn
+                        </label>
+                        <input
+                          id="hero-linkedin"
+                          name="linkedin"
+                          type="url"
+                          required
+                          className="block w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-visible:border-[#FF6600] focus-visible:ring-2 focus-visible:ring-[#FF6600] focus-visible:ring-offset-2"
+                          placeholder="https://www.linkedin.com/in/you"
+                        />
+                      </div>
+
+                      <div className="mt-6 flex justify-end">
+                        <Button
+                          type="submit"
+                          size="lg"
+                          className="h-10 rounded-lg bg-[#FF6600] px-5 text-sm font-medium text-white hover:bg-[#E65C00] hover:scale-[1.02]"
+                        >
+                          Join the Next Cohort
+                        </Button>
+                      </div>
+                    </form>
+                  </DialogContent>
+                </Dialog>
                 <a
                   href="#how"
                   className="inline-flex h-14 w-full items-center justify-center rounded-lg border border-border px-8 text-base font-medium transition hover:border-[#FF6600]/40 hover:bg-[#FF6600]/5 sm:w-auto"
@@ -481,12 +666,91 @@ export default function Home() {
                   </ul>
 
                   <div className="pt-2">
-                    <a
-                      href={joinHref}
-                      className="inline-flex h-12 w-full items-center justify-center rounded-lg bg-[#FF6600] px-6 font-medium text-white transition hover:bg-[#E65C00] hover:scale-[1.02] sm:w-auto"
-                    >
-                      Join the Next Cohort
-                    </a>
+                    <Dialog>
+                      <DialogTrigger>
+                        <Button
+                          size="lg"
+                          className="inline-flex h-12 w-full items-center justify-center rounded-lg bg-[#FF6600] px-6 font-medium text-white transition hover:bg-[#E65C00] hover:scale-[1.02] sm:w-auto"
+                        >
+                          Join the Next Cohort
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>
+                            Join the next AI Build Club cohort
+                          </DialogTitle>
+                          <DialogDescription>
+                            Share a few details and we&apos;ll follow up with
+                            next steps. This is for a small, motivated group
+                            of AI-native builders who want real portfolio
+                            evidence, not just buzzwords.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <form className="mt-4 space-y-4" onSubmit={handleJoinSubmit}>
+                          <div className="space-y-1">
+                            <label
+                              htmlFor="pricing-name"
+                              className="block text-sm font-medium text-foreground"
+                            >
+                              Name
+                            </label>
+                            <input
+                              id="pricing-name"
+                              name="name"
+                              type="text"
+                              required
+                              className="block w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-visible:border-[#FF6600] focus-visible:ring-2 focus-visible:ring-[#FF6600] focus-visible:ring-offset-2"
+                              placeholder="Your full name"
+                            />
+                          </div>
+
+                          <div className="space-y-1">
+                            <label
+                              htmlFor="pricing-email"
+                              className="block text-sm font-medium text-foreground"
+                            >
+                              Email
+                            </label>
+                            <input
+                              id="pricing-email"
+                              name="email"
+                              type="email"
+                              required
+                              className="block w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-visible:border-[#FF6600] focus-visible:ring-2 focus-visible:ring-[#FF6600] focus-visible:ring-offset-2"
+                              placeholder="you@example.com"
+                            />
+                          </div>
+
+                          <div className="space-y-1">
+                            <label
+                              htmlFor="pricing-linkedin"
+                              className="block text-sm font-medium text-foreground"
+                            >
+                              LinkedIn
+                            </label>
+                            <input
+                              id="pricing-linkedin"
+                              name="linkedin"
+                              type="url"
+                              required
+                              className="block w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-visible:border-[#FF6600] focus-visible:ring-2 focus-visible:ring-[#FF6600] focus-visible:ring-offset-2"
+                              placeholder="https://www.linkedin.com/in/you"
+                            />
+                          </div>
+
+                          <div className="mt-6 flex justify-end">
+                            <Button
+                              type="submit"
+                              size="lg"
+                              className="h-10 rounded-lg bg-[#FF6600] px-5 text-sm font-medium text-white hover:bg-[#E65C00] hover:scale-[1.02]"
+                            >
+                              Join the Next Cohort
+                            </Button>
+                          </div>
+                        </form>
+                      </DialogContent>
+                    </Dialog>
                     <p className="mt-3 text-xs text-muted-foreground">
                       If we validate the format, we may charge later. Founding
                       members stay free.
@@ -579,12 +843,91 @@ export default function Home() {
                 </p>
 
                 <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:justify-center">
-                  <a
-                    href={joinHref}
-                    className="inline-flex h-14 w-full items-center justify-center rounded-lg bg-[#FF6600] px-8 text-lg font-medium text-white transition hover:bg-[#E65C00] hover:scale-[1.02] sm:w-auto"
-                  >
-                    Join the Next Cohort
-                  </a>
+                  <Dialog>
+                    <DialogTrigger>
+                      <Button
+                        size="lg"
+                        className="h-14 w-full rounded-lg bg-[#FF6600] px-8 text-lg font-medium text-white transition hover:bg-[#E65C00] hover:scale-[1.02] sm:w-auto"
+                      >
+                        Join the Next Cohort
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>
+                          Join the next AI Build Club cohort
+                        </DialogTitle>
+                        <DialogDescription>
+                          Share a few details and we&apos;ll follow up with
+                          next steps. This is for a small, motivated group of
+                          AI-native builders who want real portfolio evidence,
+                          not just buzzwords.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <form className="mt-4 space-y-4" onSubmit={handleJoinSubmit}>
+                        <div className="space-y-1">
+                          <label
+                            htmlFor="final-name"
+                            className="block text-sm font-medium text-foreground"
+                          >
+                            Name
+                          </label>
+                          <input
+                            id="final-name"
+                            name="name"
+                            type="text"
+                            required
+                            className="block w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-visible:border-[#FF6600] focus-visible:ring-2 focus-visible:ring-[#FF6600] focus-visible:ring-offset-2"
+                            placeholder="Your full name"
+                          />
+                        </div>
+
+                        <div className="space-y-1">
+                          <label
+                            htmlFor="final-email"
+                            className="block text-sm font-medium text-foreground"
+                          >
+                            Email
+                          </label>
+                          <input
+                            id="final-email"
+                            name="email"
+                            type="email"
+                            required
+                            className="block w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-visible:border-[#FF6600] focus-visible:ring-2 focus-visible:ring-[#FF6600] focus-visible:ring-offset-2"
+                            placeholder="you@example.com"
+                          />
+                        </div>
+
+                        <div className="space-y-1">
+                          <label
+                            htmlFor="final-linkedin"
+                            className="block text-sm font-medium text-foreground"
+                          >
+                            LinkedIn
+                          </label>
+                          <input
+                            id="final-linkedin"
+                            name="linkedin"
+                            type="url"
+                            required
+                            className="block w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-visible:border-[#FF6600] focus-visible:ring-2 focus-visible:ring-[#FF6600] focus-visible:ring-offset-2"
+                            placeholder="https://www.linkedin.com/in/you"
+                          />
+                        </div>
+
+                        <div className="mt-6 flex justify-end">
+                          <Button
+                            type="submit"
+                            size="lg"
+                            className="h-10 rounded-lg bg-[#FF6600] px-5 text-sm font-medium text-white hover:bg-[#E65C00] hover:scale-[1.02]"
+                          >
+                            Join the Next Cohort
+                          </Button>
+                        </div>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
                   <a
                     href="#hero"
                     className="inline-flex h-14 w-full items-center justify-center rounded-lg border border-border px-6 font-medium transition hover:border-[#FF6600]/40 hover:bg-[#FF6600]/5 sm:w-auto"
